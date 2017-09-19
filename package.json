@@ -1,0 +1,14 @@
+{
+  "name": "serverless-plugin-apig-role",
+  "version": "0.1.0",
+  "description": "Serverless framework plugin to create execute-api role with a specific stable role identifier",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Liyue Wang<liyuewang@outlook.com>",
+  "license": "MIT",
+   "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
