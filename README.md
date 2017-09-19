@@ -22,4 +22,5 @@ plugins:
 
 custom:
   executeApiRole: "test-ExecuteApiRole"
+  allowedAccounts: [ "arn:aws:iam::xxxxxxxxxxxx:root" ]  # except the current account
 ```

@@ -17,12 +17,12 @@ module.exports = class ExecuteApiRole {
     });
 
     this.hooks = {
-      'after:aws:deploy:deploy:updateStack': this.createRole.bind(this),
+      'after:aws:deploy:deploy:updateStack': this.createExecuteApiRole.bind(this),
     };
   }
 
-  createRole(){
-    this.serverless.cli.log('Creating execute-api role...');
+  createExecuteApiRole(){
+    this.serverless.cli.log('[serverless-plugin-apig-role]: Creating execute-api role...');
     const roleName = this.serverless.service.custom.executeApiRole ? this.serverless.service.custom.executeApiRole : `service-${this.options.stage}-ExecuteApiRole`;
 
     Promise.resolve()
@@ -32,10 +32,10 @@ module.exports = class ExecuteApiRole {
         })
         .promise()
         .then(() =>{
-          this.serverless.cli.log(`execute api role ${roleName} already exists.`);
+          this.serverless.cli.log(`[serverless-plugin-apig-role]: execute api role ${roleName} already exists.`);
         })
         .catch(e => {
-          if (e.statusCode === 404 || e.code === 'NotFoundException') {
+          if (e.statusCode === 404 || e.code === 'NoSuchEntity') {
             return this.getRoleParams(roleName)
               .then((roleParams) => {
                 return this.iam.createRole(roleParams)
@@ -49,7 +49,7 @@ module.exports = class ExecuteApiRole {
                   .promise();
               })
               .then((data) => {
-                this.serverless.cli.log(`execute api role ${roleName} created.`);
+                this.serverless.cli.log(`[serverless-plugin-apig-role]: execute api role ${roleName} created.`);
               });
           }
           throw e;
@@ -58,7 +58,7 @@ module.exports = class ExecuteApiRole {
   }
 
   getRoleParams(roleName) {
-    let allowedAccounts = this.serverless.service.custom.allowedAccounts;
+    let allowedAccounts = this.serverless.service.custom.allowedAccounts ? this.serverless.service.custom.allowedAccounts : [];
 
     return this.getAccountId()
       .then((accountId) => {
