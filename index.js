@@ -33,6 +33,7 @@ module.exports = class ExecuteApiRole {
         .promise()
         .then(() =>{
           this.serverless.cli.log(`[serverless-plugin-apig-role]: execute api role ${roleName} already exists.`);
+          return;
         })
         .catch(e => {
           if (e.statusCode === 404 || e.code === 'NoSuchEntity') {
